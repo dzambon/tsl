@@ -112,7 +112,9 @@ class GaussianNoiseSyntheticDataset(TabularDataset):
         # initialize with noise
         x = torch.empty((self._num_steps + self._min_window,
                          self._num_nodes,
-                         self._num_features)).normal_(generator=rng) * self.sigma_noise
+                         self._num_features)).normal_(generator=rng)
+        if self.sigma_noise > 0.0:  # avoid non-trivial inits  
+            x = x * self.sigma_noise
 
         y_opt = torch.empty((self._num_steps,
                              self._num_nodes,
